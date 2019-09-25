@@ -40,6 +40,8 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling {
                 
                 completion(response)
             }
+        @unknown default:
+            <#fatalError()#>
         }
     }
     
@@ -49,7 +51,19 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling {
             return .none
         }
         
-        return name.contains("-") ? .filter: .none
+        guard let bod = queryRequest.messageBody else {
+            return .none
+        }
+        
+        if name.contains("-") {
+            if bod.lowercased().contains("otp"){
+                return .allow
+            }
+            else {
+                return .filter
+            }
+        }
+        return .none
     }
     
     private func action(for networkResponse: ILNetworkResponse) -> ILMessageFilterAction {
