@@ -56,7 +56,7 @@ extension MessageFilterExtension: ILMessageFilterQueryHandling {
         }
         
         if name.contains("-") {
-            if bod.lowercased().contains("otp"){
+            if (bod.lowercased().contains("otp") || bod.lowercased().contains("password")){
                 return .allow
             }
             else {
